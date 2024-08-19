@@ -2,17 +2,32 @@ provider "aws" {
   region = "us-east-2"
 }
 
+variable "subnet_cidr_block" {
+  description = "subnet cidr block"
+  
+}
+
+variable "vpc_cidr_block" {
+  description = "vpc cidr block"
+  
+}
+
+variable "environment" {
+  description = "deployment environment"
+  
+}
+
 resource "aws_vpc" "my-vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vpc_cidr_block
   tags = {
-    Name: "development"
+    Name: var.environment
     vpc_env: "dev"
   }
 }
 
 resource "aws_subnet" "my-subnet" {
   vpc_id = aws_vpc.my-vpc.id
-  cidr_block = "10.0.10.0/24"
+  cidr_block = var.subnet_cidr_block
   availability_zone = "us-east-2a"
    tags = {
     Name: "subnet-1-development"
@@ -32,5 +47,15 @@ resource "aws_subnet" "my-vpc1" {
    tags = {
     Name: "subnet-1-default"
   }
+  
+}
+
+output "dev-vpc-id" {
+  value = aws_vpc.my-vpc.id
+  
+}
+
+output "dev-subnet-id" {
+  value = aws_subnet.my-subnet.id
   
 }
