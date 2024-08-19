@@ -4,7 +4,8 @@ provider "aws" {
 
 variable "subnet_cidr_block" {
   description = "subnet cidr block"
-  
+  default = "10.0.10.0/24"
+  type = string
 }
 
 variable "vpc_cidr_block" {
@@ -16,6 +17,9 @@ variable "environment" {
   description = "deployment environment"
   
 }
+
+variable availability_zone {}
+  
 
 resource "aws_vpc" "my-vpc" {
   cidr_block = var.vpc_cidr_block
